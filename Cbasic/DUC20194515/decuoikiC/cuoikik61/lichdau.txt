@@ -1,0 +1,6 @@
+Bach Khoa:Xay Dung
+Kinh te:Thuy loi
+Bach Khoa:Kinh te
+Xay Dung:Thuy loi
+Bach Khoa:Thuy loi
+Xay Dung:Kinh te

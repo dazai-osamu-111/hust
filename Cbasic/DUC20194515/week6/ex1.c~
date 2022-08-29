@@ -1,0 +1,76 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+typedef struct{
+  char name[30];
+  char tel[12];
+  char email[30];
+} address;
+
+struct list_el{
+  address addr;
+  struct list_el *next;
+};
+typedef struct list_el node_addr;
+node_addr *root, *cur;
+node_addr* makeNewNode(address addr){
+  node_addr* new = (node_addr*)malloc(sizeof(node_addr));
+  new->addr=addr;
+  new->next = NULL;
+  return new;
+}
+address readNode(){
+  address tmp;
+  printf("Nhap ho ten: ");
+  gets(tmp.name);
+  printf("Nhap so dien thoai: ");
+  gets(tmp.tel);
+  printf("Nhap email: ");
+  gets(tmp.email);
+  return tmp;
+}
+void displayNode(node_addr* p){
+  if(p==NULL){
+    printf("Loi con tro NULL\n");
+    return;  
+  }
+  printf("Name: %s\n", (*p).addr.name);
+  printf("Tel: %s\n", (*p).addr.tel);
+  printf("Email: %s\n",(*p).addr.email);
+  return ;
+}
+void traversinglist(){
+  node_addr *p;
+  for(p=root;p!=NULL;p=p->next){
+    displayNode(p);
+  }
+  return;
+}
+void insertathread(address addr){
+  node_addr *new=makeNewNode(addr);
+  new->next=root;
+  root=new;
+  cur=root;
+}
+void insertaftercurrentpos(address addr){
+  node_addr *new=makeNewNode(addr);
+  if(root == NULL && cur==NULL){
+    return;
+  }
+  if(root == NULL){
+    root=new;
+    cur = root;
+  }else{
+    new->next = cur->next;
+    cur->next=new;
+    cur=cur->next;
+  }
+  return;
+  }
+
+int main(){
+  address tmp=readNode();
+  root = makeNewNode(tmp);
+  displayNode(root);
+  return 0;
+}

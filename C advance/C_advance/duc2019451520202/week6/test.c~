@@ -1,0 +1,12 @@
+#include<stdio.h>
+#include<string.h>
+int main(){
+  FILE *fptr = fopen("test.txt", "r");
+  char A[100],c;
+  while(1){
+    fscanf(fptr, "%s", A);
+    c= fgetc(fptr);
+    printf("%s\n", A);
+    if(c=='\n') break;
+  }
+}

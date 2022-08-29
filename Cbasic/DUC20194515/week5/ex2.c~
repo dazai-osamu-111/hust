@@ -1,0 +1,49 @@
+#include<stdio.h>
+#include<stdlib.h>
+#define MAX 13
+typedef struct{
+  int no;
+  int Student_number;
+  char First_name[30];
+  char phone_number[15];
+  double score;
+} student;
+int main(int argc, char *argv[]){
+  if(argc != 3){
+    printf("ERROR SYNTAX.\n");
+    printf("TRUE SYNTAX: readst <filename1> <filename2>\n");
+    return 1;
+  }
+  FILE *fin, *fout;
+  student *a;
+  int irc,i;
+  if((fin = fopen(argv[1], "r")) == NULL){
+      printf("Cannot open %s\n", argv[1]);
+      return 1; 
+    }
+  if((fout = fopen(argv[2],"w+b")) == NULL){
+    printf("Cannot open %s\n",argv[2]);
+    return 1;
+  }
+  a =(student*)malloc(MAX*sizeof(student));
+  if(a==NULL){
+    printf("Memory allocation failed!\n");
+    return 1;
+  }
+  irc = fread(a, sizeof(student), MAX, fin);
+  printf("%d\n", irc);
+  irc = fwrite(a,sizeof(student), irc, fout);
+  printf("%d\n",irc);
+  if(fseek(fout,0,SEEK_SET) != 0){
+    printf("Fseek failed!\n");
+    return 1;
+  }
+  irc = fread(a, sizeof(student), MAX, fout);
+  for(i=0;i<1;i++){
+    printf("%-10d%-10d%-24s%-15s%.2lf\n",(a+i)->no,(a+i)->Student_number,(a+i)->First_name,(a+i)->phone_number,(a+i)->score);
+  }
+  fclose(fin);
+  fclose(fout);
+  return 0;
+}
+  

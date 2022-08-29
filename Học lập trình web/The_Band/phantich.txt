@@ -1,0 +1,7 @@
+1. header
+2. content
+	- about
+	- tour
+	- contact
+	- image
+3. footer

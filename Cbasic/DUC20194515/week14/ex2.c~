@@ -1,0 +1,47 @@
+#include<stdio.h>
+#include<stdio.h>
+typedef int element;
+void adjust(element list[], int root, int n){
+  int child, rootkey;
+  element temo;
+  temp=list[root];
+  rootkey=list[root];
+  child=2*root;
+  while (child <= n){
+    if((child < n) && list[child] < list[child+1]) child ++;
+    if(rootkey>list[child]) break;
+    else{
+      list[child/2] = list[child];
+      child *= 2;
+    }
+  }
+  list[child/2] =temp;
+}
+void heapsort(element list[], int n){
+  int i,j;
+  element temp;
+  for(i=n/2;i>0;i--) adjust(list, i, n);
+  for(i=n-1;i>0;i--){
+    temp=list[i];
+    list[i]=list[i+1];
+    list[i+1]=temp;
+    adjust(list, 1, i);
+  }
+}
+int main(){
+  int a[100];
+  int n,i,j;
+  printf("Nhap so phan tu: ");
+  scanf("%d", &n);
+  for(i=0;i<n;i++){
+    printf("Phan tu thu %d: ", i+1);
+    scanf("%d", &a[i]);
+  }
+  heapsort(a, n);
+  printf("Mang sau khi sap xep:\n ");
+  for(i=0;i<n;i++){
+    printf("%d\t",a[i]);
+  }
+  printf("\n");int a[100];
+  
+}

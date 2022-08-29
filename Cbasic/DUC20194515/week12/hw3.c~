@@ -1,0 +1,26 @@
+#include<stdio.h>
+#include "GenBTree.h"
+void inorderprint(treetype t){
+  if(t==NULL) return;
+  else{
+    inorderprint(t->left);
+    printf("%4d\n", t->element);
+    inorderprint(t->right);
+  }
+  return;
+}
+int main(){
+  treetype T;
+  int a[11]={1,2,3,4,5,6,7,8,9,10,11};
+  int i;
+  makenulltree(&T);
+  for(i=0;i<5;i++){
+    addleft(&T, a[i]);
+  }
+  for(i=5;i<11;i++){
+    addright(&T, a[i]);
+  }
+  inorderprint(T);
+  printf("the number of node: %d\n", nbnode(T));
+  return 0;
+}

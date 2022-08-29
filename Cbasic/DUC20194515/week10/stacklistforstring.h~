@@ -1,0 +1,42 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+typedef char  eltype[100];
+typedef struct stacktype{
+  eltype e;
+  struct stacktype *link;
+} stacktypestr;
+int empty(stacktypestr *p){
+  return p==NULL;
+}
+void push(stacktypestr **p, eltype e){
+  stacktypestr *new=(stacktypestr*)malloc(sizeof(stacktype));
+  strcpy(new->e, e);
+  new->link=*p;
+  *p=new;
+  return;
+}
+eltype pop(stacktypestr **p){
+  if(empty(*p)){
+    printf("stack undeflow \n");
+    exit(0);
+  }
+  stacktypestr *temp=*p;
+  eltype poped;
+  strcpy(poped,temp->e); 
+  *p=(*p)->link;
+  free(temp);
+  return poped;
+}
+void freestack(stacktypestr **p){
+  while(!empty(*p)){
+    pop(p);
+  }
+}
+eltype peek(stacktypestr *p){
+  if(empty(p)){
+    printf("stack undeflow\n");
+    exit(0);
+  }
+  return p->e;
+}

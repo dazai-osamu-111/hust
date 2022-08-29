@@ -1,0 +1,33 @@
+#include<stdio.h>
+#include<stdlib.h>
+#define MAX 100
+typedef struct{
+  char model[40];
+  char space[10];
+  char ssize[15];
+  char price[20];
+} phonedb;
+typedef struct{
+  char model[40];
+} name;
+typedef name element;
+#include "GenSBTree st.h"
+int main(){
+  FILE *f1, *f2;
+  if((f1=fopen("PhoneDB.txt", "r"))== NULL){
+    printf("cannot open file PhoneDB.txt\n");
+    return 1;
+  }
+  if((f2=fopen("PhoneDB.dat", "r"))== NULL){
+    printf("cannot open file PhoneDB.dat\n");
+    return 1;
+  }
+  treetype T;
+  pa *a;
+  char s[MAX]
+  int count=0;
+  while((fgets(s, MAX, f1)) != NULL){
+    count ++;
+  }
+  printf("%d\n", count);
+}

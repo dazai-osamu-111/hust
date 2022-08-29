@@ -1,0 +1,70 @@
+/* PC */
+@media (min-width: 1020px){
+    #header .mobile-menu-btn {
+        display: none;
+    }
+}
+
+
+/* Moblie */
+@media (max-width:740px) {
+
+    .s-col-full {
+        width: 100%;
+    }
+
+    .s-mt-8 {
+        margin-top: 8px;
+    }
+    
+    #header .mobile-menu-btn{
+        display: inline-block;
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+
+    #header {
+        overflow: hidden;
+    }
+    #header .search-btn{
+        display: none;
+    }
+
+    .nav {
+        display: block;
+    }
+
+    .nav > li {
+        display: block;
+    }
+
+    .nav > li:first-child {
+        display: inline-block;
+    }
+
+    .nav li a {
+        display: block;
+    }
+
+
+    .nav .subnav a {
+        color: #fff;
+    }
+
+    
+
+    #content .member-img {
+        width: 60%;
+    }
+
+}
+
+/* tablet */
+@media (min-width:740px) and (max-width: 1020px){
+    #header .mobile-menu-btn {
+        display: none;
+    }
+   
+
+}

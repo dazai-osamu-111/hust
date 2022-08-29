@@ -1,0 +1,71 @@
+#include<stdio.h>
+#include<stdlib.h>
+typedef struct{
+  int masp;
+  char ten[30];
+  int gia;
+  int sl;
+} sanpham;
+
+typedef sanpham element;
+#include "GenSLL.h"
+int main(){
+  sanpham a[100], tmp;
+  int x,i;
+  do{
+    printf("1. Nhap thong tin sap pham\n"
+	   "2. Doc tep\n"
+	   "3. Sap xep\n"
+	   "4. Tinh tong so tien"
+	   "5. Dem nhom sp trung gia\n"
+	   "6. Ten trung nhau\n"
+	   "7. Thoat\n"
+	   "Your choice: ");
+    scanf("%d", &x);
+    switch(x){
+    case 1:
+      while(1){
+	printf("Nhap ma so sp: ");
+	scanf("%d", &a[i].masp);
+	if(a[i].masp == 0){
+	  printf("ket thuc\n");
+	  break;
+	} else{
+	  if(i>=1){
+	    while(a[i].masp<=a[i-1].masp){
+	      printf("ma san pham ko hop le:\n");
+	      scanf("%d", &a[i].masp);
+	    }
+	  }
+	  printf("Nhap gia: ");
+	  scanf("%d", &a[i].gia);
+	  while(a[i].gia < 0){
+	    printf("Gia phai lon hon 0, hay nhap lai : ");
+	    scanf("%d", &a[i].gia);
+	  }
+	  printf("Nhap so luong: ");
+	  scanf("%d", &a[i].sl);
+	  while(a[i].sl<=0){
+	    printf("So luong san pham phai lon hon 0: ");
+	    scanf("%d", &a[i].sl);
+	  }
+	  printf("Nhap ten sp: ");
+	  gets(a[i].ten);
+	  i++;
+	}
+      }
+      break;
+    case 2:
+      break;
+    case 3:
+      break;
+    case 4:
+      break;
+    case 5:
+      break;
+    case 6:
+      break;
+    }
+  } while(x!=7);
+  return 0;
+}

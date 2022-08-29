@@ -1,0 +1,13 @@
+#include<stdio.h>
+int findGCD(int m, int n){
+  if(m==n) return m;
+  if(m<n) return findGCD(n,m);
+  if(m>n) return findGCD(m-n,n);
+}
+int main(){
+  int x,y;
+  printf("Enter x, y\n");
+  scanf("%d %d", &x&y);
+  printf("GCD is %d\n", findGCD(x, y));
+  return 0;
+}

@@ -1,0 +1,140 @@
+1. Đưa ra thông tin bệnh nhân đã khám bệnh tại bệnh viện và số lần khám( tức Status của BOOKNG là đã khám xong), sắp xếp theo thứ tự giảm dần của số lần khám.
+
+select PATIENTS.*, count(BookingId) as solankham from PATIENTS, BOOKING where PATIENTS.PatientId=BOOKING.PatientId and Status = 'Đã khám xong'  group by PatientId order by count(BookingId) desc ;
+
+              ____________________________________________________________________
+              
+2. Đưa ra DoctorId, họ tên, chuyên khoa, lịch làm việc các bác sĩ.
+
+select d.DoctorId, d.Name,sp.name, concat("Ngày:", Date," Giờ:", TimeType) from DOCTORS d, SCHEDULE s, TIMETYPE t, SPECIALTY sp, DOCTOR_SPECIALTY dsp where d.DoctorId = s.DoctorId and t.TimeTypeId = s.TimeTypeId and dsp.SpecialtyId = sp.SpecialtyId and d.DoctorId = dsp.DoctorID;
+
+              ____________________________________________________________________
+              
+3. Tạo chỉ mục để truy vấn thông tin những bệnh nhân ở "Phường Quán Thánh,  Ba Đình, Hà Nội", so sánh độ hiệu quả của câu truy vấn với không dùng chỉ mục.
+
+câu truy vấn: select * from  PATIENTS where  Address = "Phường Quán Thánh,  Ba Đình, Hà Nội ";
+Số hàng cần truy vấn là: 990405
+
+Trước khi tạo chỉ mục:0.41 sec
+
+Tạo chỉ mục: create index Address on PATIENTS(Address);
+Thời gian chạy: 0.02 sec - 0.05 sec
+Số hàng cần truy vấn là:  6684
+
+              ____________________________________________________________________
+
+4. Tạo TRIGGER lưu trữ sự kiện delete của bảng BOOKING
+
+create table booking_audit(
+	id int auto_increment primary key,
+	BookingId char(8) not null, 
+	PatientId char(9) not null, 
+	ScheduleId char(6) not null,	
+	BookingDate date,
+	BookingMoment time,
+	Status varchar(20),
+	changdate datetime default null,
+	action varchar(50) default null
+);
+
+DELIMITER $$
+CREATE TRIGGER after_booking_delete
+AFTER DELETE ON BOOKING
+FOR EACH ROW
+BEGIN
+INSERT INTO booking_audit
+set action = 'delete',
+BookingId = old.BookingId,
+PatientId = old.PatientId,
+ScheduleId = old.ScheduleId,
+BookingDate = old.BookingDate,
+BookingMoment = old.BookingMoment,
+Status = old.Status,
+changdate = NOW();
+END$$
+DELIMITER ;
+
+delete from BOOKING where BookingId = 'BK001100';
+select * from booking_audit;
+
+              ____________________________________________________________________
+              
+5. In ra số tiền cần trả cho mỗi lần khám của các bệnh nhân.
+
+select p.*, u.BookingId,d.DoctorId, (SUM(price) + ExaminationFee) as Fee from DOCTORS d,SCHEDULE sc, USED_SERVICES u, SERVICES s, BOOKING b, PATIENTS p where u.ServiceId = s.ServiceId and b.BookingId = u.BookingId and p.PatientId = b.PatientId and b.ScheduleId = sc.ScheduleId and sc.DoctorId = d.DoctorId group by u.BookingId order by b.PatientId;
+
+
+              ____________________________________________________________________
+6. Tạo procedure để tính tiền sử dụng dịch vụ của bệnh nhân trong các lần đến khám tại bệnh viện.
+procedure cần tạo: calculatePrice(PatientId); 
+( Câu demo số 1)
+
+DELIMITER $$
+create procedure calculatePrice(IN Order_PatientId char(9))
+BEGIN 
+select p.*,d.DoctorId, u.BookingId, (SUM(price) + ExaminationFee) as Fee from DOCTORS d,SCHEDULE sc, USED_SERVICES u, SERVICES s, BOOKING b, PATIENTS p where u.ServiceId = s.ServiceId and b.BookingId = u.BookingId and p.PatientId = b.PatientId and b.ScheduleId = sc.ScheduleId and sc.DoctorId = d.DoctorId and b.PatientId = Order_PatientId group by u.BookingId;
+END$$
+DELIMITER ;
+
+câu lệnh test procedure: 
+call calculatePrice('PA0000001');
+call calculatePrice('PA0000002');
+
+	      ____________________________________________________________________
+
+7. Tạo function cho biết rank của bác sĩ, nếu kinh nghiệm >=10 năm thì là rank gold, 5<= số năm kinh nghiệm < 10 thì là rank silver, <5 năm sẽ là bronze
+
+DELIMITER $$
+
+CREATE FUNCTION DoctorLevel(
+	Experience int
+) 
+RETURNS VARCHAR(20)
+DETERMINISTIC
+BEGIN
+    DECLARE DoctorLevel VARCHAR(20);
+
+    IF Experience >= 10 THEN
+		SET DoctorLevel = 'GOLD';
+    ELSEIF (Experience >= 5 AND 
+			Experience < 10) THEN
+        SET DoctorLevel = 'SILVER';
+    ELSEIF Experience < 5 THEN
+        SET DoctorLevel = 'BRONZE';
+    END IF;
+	-- return the DOCTOR level
+	RETURN (DoctorLevel);
+END$$
+DELIMITER ;
+
+Câu lệnh test Function:
+select DOCTORS.*, DoctorLevel(Experience) from DOCTORS, DOCTOR_SPECIALTY where DOCTORS.DoctorId = DOCTOR_SPECIALTY.DoctorId order by Experience DESC;
+
+
+              ____________________________________________________________________
+              
+8. Tìm kiếm các dịch vụ liên quan đến xương khớp.
+
+alter table SERVICES ADD FULLTEXT(Name);
+select Name from SERVICES where MATCH(Name) against ('Xương,Khớp');
+
+              ____________________________________________________________________
+              
+9. In ra thông tin bác sĩ thực hiện khám bệnh nhiều nhất trong tuần từ 17/01/2022 đến 23/01/2022 và cho biết rank của bác sĩ đó.
+
+select d.*, count(BookingId), DoctorLevel(Experience) from SCHEDULE s, BOOKING b, TIMETYPE t, DOCTORS d, DOCTOR_SPECIALTY ds where s.ScheduleId = b.ScheduleId and s.TimeTypeId = t.TimeTypeId and s.DoctorId = d.DoctorId and d.DoctorId = ds.DoctorId and Status = 'Đã khám xong' and Date>= '2022-01-17' and Date <= '2022-01-23'  group by DoctorId having count(BookingId) >= all(select count(BookingId) from SCHEDULE s, BOOKING b, TIMETYPE t where s.ScheduleId = b.ScheduleId and s.TimeTypeId = t.TimeTypeId and Status = 'Đã khám xong' and Date>= '2022-01-17' and Date <= '2022-01-23'  group by DoctorId);
+
+( Câu demo số 2)
+
+              ____________________________________________________________________
+              
+10. Đưa ra khoảng thời gian được đặt lịch nhiều nhất trong tuần từ 17/01/2022 đến 23/01/2022
+
+( câu demo số 3)
+
+select TimeType,count(BookingId) from SCHEDULE s, BOOKING b, TIMETYPE t where s.ScheduleId = b.ScheduleId and s.TimeTypeId = t.TimeTypeId and Date>= '2022-01-17' and Date <= '2022-01-23' group by TimeType having count(BookingId) >= all(select count(BookingId) from SCHEDULE s, BOOKING b, TIMETYPE t where s.ScheduleId = b.ScheduleId and s.TimeTypeId = t.TimeTypeId and Date>= '2022-01-17' and Date <= '2022-01-23' group by TimeType);
+
+
+
+
+              ____________________________________________________________________

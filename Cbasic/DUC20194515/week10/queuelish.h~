@@ -1,0 +1,11 @@
+#include<stdio.h>
+typedef element eltype;
+typedef struct queue_t{
+  eltype e;
+  struct queue_t *next,*prev;
+} queue;
+
+int initialize(queue **front, queue **rear){
+  
+}
+queue makenew

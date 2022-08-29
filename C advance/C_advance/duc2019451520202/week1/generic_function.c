@@ -1,0 +1,87 @@
+#include<stdio.h>
+#include<string.h>
+#include<stdlib.h>
+#include<time.h>
+#include<stdio_ext.h>
+#define MAX 100
+
+int int_compare(void *a, void *b){
+  int m=*((int*)a);
+  int n=*((int*)b);
+  return m-n;
+}
+
+int string_compare(void *a, void *b){
+  char *m=(char*)a;
+  char *n=(char*)b;
+  if(strcmp(m,n) ==0) return 0;
+  return strcmp(m,n) > 0 ? 1 : -1;
+}
+void swap(void *a, void *b, size_t size){
+  void *tmp= malloc( sizeof(char) * size);
+  memcpy(tmp, a, size);
+  memcpy(a, b, size);
+  memcpy(b, tmp, size);
+  return;
+}
+void selectionsort(void  *arr, int n, size_t  size, int (*compare)(void *a, void *b)){
+  int i, j, min;
+  for(i=0;i<n-1;i++){
+    min=i;
+    for(j=i+1;j<n;j++)
+      if(compare(arr+j*size, arr+min*size) < 0)
+	min=j;
+    swap(arr+i* size, arr+min* size, size);
+  }
+  return;
+}
+
+int  splitstring(char s[][MAX],char str[]){
+  int i,j, k;
+  j=0;i=0;k=0;
+  for(i=0;i < strlen(str);i++){
+    if(str[i] != ' ' && str[i] != '\n' && str[i] != '\t'){
+      s[k][j]=str[i];
+      j++;
+    }
+    else{
+      s[k][j]='\0';
+      k++;
+      j=0;
+    }
+  }
+  k++;
+  printf("%d\n", k);
+  return k;
+}
+
+int main(){
+  int *a, n,i;
+  printf("Enter n: ");
+  scanf("%d", &n);
+  a= malloc(n * sizeof(int));
+  srand(time(NULL));
+  for(i=0;i<n;i++){
+    *(a+i)=rand()%10 +1;
+  }
+  for(i=0;i<n;i++){
+    printf("%d\t", *(a+i));
+  }
+  printf("\n");
+  selectionsort(a, n, sizeof(int),  int_compare);
+  for(i=0;i<n;i++){
+    printf("%d\t", *(a+i));
+  }
+  printf("\n");
+  __fpurge(stdin);
+   printf("For string\n");
+  char s[MAX][MAX], str[1000];
+  printf("Enter a sentence: ");
+  scanf("%[^\n]", str);
+  n=splitstring(s, str);
+  for(i=0;i<n;i++){
+    printf("%s\n", s[i]);
+  }
+  selectionsort(s, n, sizeof(), string_compare);
+  return 0;
+}

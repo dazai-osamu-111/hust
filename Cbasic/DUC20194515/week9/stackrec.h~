@@ -1,0 +1,29 @@
+#include<stdio.h>
+typedef int eltype;
+typedef int eltype;
+typedef struct stackrec{
+  eltype storage[MAX];
+  int top;
+};
+typedef struct stackrec stacktype;
+int initialize(stacktype stack){
+  return stack.top == 0;
+}
+int isfull(stacktype stack){
+  return stack.top == MAX;
+}
+entype(eltype el, stacktype *stack){
+  if(isfull(stack))
+    printf("Stack overflow");
+  else(*stack).storage[(*stack).top++]=rl;
+}
+eltype pop(stacktype *stack){
+  if(isempty(*stack))
+    printf("stack underflow");
+  else return (*stack).storage[--(*stack).top];
+}
+eltype peek(stacktype *stack){
+  if(isempty(*stack))
+    printf("stack underflow");
+  else return (*stack).storage[(*stack).[top-1]];
+}

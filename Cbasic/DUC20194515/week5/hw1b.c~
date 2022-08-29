@@ -1,0 +1,55 @@
+#include<stdio.h>
+#include<stdlib.h>
+#define MAX 100
+typedef struct{
+  char name[30];
+  char tl[12];
+  char mail[30];
+} pa;
+int main(int argv, char *argv[]){
+  if(argc != 4){
+    printf("ERROR SYNTAX!\n");
+    printf("TRUE SYNTAX: filemerge <filename> <filename1> <filename2>\n");
+    return 1;
+  }
+  FILE *f1,*f2,*f3;
+  pa b1[MAX],b2[MAX],*a1,*a2,*a3;
+  int irc1=0,irc2 = 0, i;
+  f1 = fopen(argv[1],"rb");
+  f2 = fopen(argv[2],"rb");
+  f3 = fopen(argv[3],"w+b");
+  if(f1 == NULL){
+    printf("Cannot open %s\n",argv[1]);
+  }
+  if(f2 == NULL){
+    printf("Cannot open %s\n",argv[2]);
+  }
+  if(f2 == NULL){
+    printf("Cannot open %s\n",argv[2]);
+  }
+  i=0;
+  while(!feof(f1)){
+    irc1+= fread(b1+i, sizeof(pa), 1, f1);
+    i++;
+  }
+  if((a1=(pa*)malloc(irc1*sizeof(pa))) == NULL){
+    printf("Memory allocation failed!\n");
+    return 1;
+  }
+  i=0;
+  while(!feof(f2)){
+    irc2+= fread(b2+i, sizeof(pa), 1, f2);
+  }
+  printf("%d\n",irc2);
+  if((a2=(pa*)malloc(irc2*sizeof(pa))) == NULL){
+    printf("Memory allocation failed!\n");
+    return 1;
+  }
+  if((a3=(pa*)malloc((irc1+irc2)*sizeof(pa))) == NULL){
+    printf("Memory allocation failed!\n");
+    return 1;
+  }
+  fwrite(b1, sizeof(pa), irc1, f3);
+  fwrite(b2, sizeof(pa), irc2, f3);
+  return 1;
+}

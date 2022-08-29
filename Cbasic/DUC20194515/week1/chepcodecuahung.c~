@@ -1,0 +1,25 @@
+#include<stdio.h>
+#include<string.h>
+void main(){
+  char str[1000];
+  printf("Nhap ten:");
+  fget(str, 1000,stdin);
+  int n=strlen(str);
+  char a[100],b;
+  int i=0;
+  int m=0;
+  while(strlen(str) >i){
+    for(i=0;i<strlen(str); i++){
+      if(str[i] >= 'A' && str[i]<= 'z')
+	{
+	  printf("%c",str[i]);
+	  m=1;
+	  continue;
+	}
+      if(m==1){
+	printf("\n");
+	m==0;
+      }
+    }
+  }
+}

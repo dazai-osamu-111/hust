@@ -1,0 +1,57 @@
+#include<stdio.h>
+#include<string.h>
+#include<time.h>
+typedef struct{
+  char name[50];
+} vdv;
+typedef vdv element;
+#include "queuelist.h"
+#include "GenBTree.h"
+#define MAX 100
+int random1(int min, int max){
+  return min+rand()%(max+1-min);
+}
+
+void postorderprint(treetype tree){
+  if(tree!=NULL){
+    postorderprint(tree->left);
+    postorderprint(tree->right);
+    printf("%20s\n", tree->element.name);
+  }
+}
+
+int main(){
+  treetype T;
+  queue *front=NULL, *rear= NULL;
+  FILE *fptr;
+  int i, count=0;
+  char a1[50];
+  vdv *a,a2;
+  fptr=fopen("AUOpen.txt", "r");
+  if(fptr==NULL){
+    printf("Cannot open file.\n");
+    return 1;
+  }
+  while(fgets(a1, MAX, fptr) !=NULL){
+    count ++;
+  }
+  a=(vdv*)malloc(count * sizeof(vdv));
+  if(fseek(fptr, 0, SEEK_SET) != 0){
+  printf("fseek failed\n");
+  return 1;
+}
+  for(i=0;i<count;i++){
+    fgets(a1,MAX,fptr);
+    strcpy(a[i].name,a1);
+  }
+  for(i=0;i<count;i++){
+    printf("%s\n",a[i].name);
+  }
+  for(i=0;i<count;i++){
+    enQ(&front, &rear, a[i]); 
+  }
+  while(!empty(front){
+    
+  }
+  return 0;
+}

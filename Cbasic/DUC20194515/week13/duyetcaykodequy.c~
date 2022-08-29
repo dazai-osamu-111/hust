@@ -1,0 +1,73 @@
+#include<stdio.h>
+#include "GenSBTree.h"
+void inorder(treetype root){
+  treetype p;
+  while(root!=NULL){
+    if(root->left == NULL){
+      printf("%d\t", root->key);
+      root=root->right;
+    }
+    else{
+      p=root->left;
+      while(p->right!=NULL && p->right != root) p=p->right;
+      if(p->right == NULL){
+	p->right=root;
+	root=root->left;
+      }
+      else{
+	p->right=NULL;
+	printf("%d\t", root->key);
+	root=root->right;
+      }
+    }
+  }
+  printf("\n");
+}
+void preorder(treetype root){
+  treetype p;
+  while(root){
+    if(root->left==NULL){
+      printf("%d\t", root->key);
+      root=root->right;
+    }
+    else{
+      p = root->left;
+      while(p->right  && p->right != root){
+	p=p->right;
+      }
+      if(p->right == NULL){
+	p->right = root;
+	printf("%d\t", root->key);
+	root=root->left;
+      }
+      else{
+	p->right= NULL;
+	root = root->right;
+      }
+    }
+  }
+  printf("\n");
+}
+
+void postorder(treetype root){
+  treetype p=root;
+  while(p->left !=NULL && p->left !=NULL)
+}
+int main(){
+  treetype T;
+  int i;
+  int a[8]={50,30,70,40,20,10,60,90};
+  makenulltree(&T);
+  for(i=0;i<8;i++){
+    insertnode(a[i], &T);
+  }
+  inorderprint(T);
+  printf("\n\n");
+  printf("duyet tu giua:\n");
+  inorder(T);
+  printf("Duyet tu truoc:\n");
+  preorder(T);
+  printf("dung de quy:\n");
+  preorderprint(T);
+  return 0;
+}

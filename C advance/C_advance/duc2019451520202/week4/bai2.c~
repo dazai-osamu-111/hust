@@ -1,0 +1,13 @@
+// Su dung thu vien jrb
+#include<stdio.h>
+#include "jrb.h"
+
+int main(){
+  int x;
+  
+  JRB *tree=make_jrb();
+  /* insert an integer number*/
+  printf("Enter a number( integer): ");
+  scanf("%d", &x);
+  jrb_insert_int(tree, x, 
+}

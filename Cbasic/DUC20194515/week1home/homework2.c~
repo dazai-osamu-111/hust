@@ -1,0 +1,14 @@
+#include<stdio.h>
+#include<string.h>
+int main(){
+  char str[100], ten[10];
+  int t,i;
+  printf("Nhap ho va ten:");  
+  fgets(str,sizeof(str),stdin);
+  t = strlen(str);
+  for(i= t;str[i] !=' ';i--){
+    strcpy(ten,&str[i]);
+  }
+  puts(ten);
+  return 0;
+}

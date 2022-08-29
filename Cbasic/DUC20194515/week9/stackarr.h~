@@ -1,0 +1,31 @@
+#include<stdio.h>
+#define MAX 50
+typedef int eltype;
+typedef eltype stacktype[MAX];
+int top;
+void innitialize(stacktype stack){
+  top=0;
+}
+int  isempty(stacktype stack){
+  return top == 0;
+}
+int isfull(stacktype stack){
+  return top == MAX;
+}
+int push(eltype el, stacktype stack){
+  if(isfull(stack))
+    printf("stack overflow");
+  else stack[top++] = el;
+}
+eltype pop(stacktype stack){
+  if(isempty(stack))
+    printf("stack underflow");
+  else return stack[--top];
+}
+eltype peek(stacktype stack){
+  if(isempty(stack)){
+    printf("stack underflow");
+    return -99999;
+  }
+  else return stack[top-1];
+}

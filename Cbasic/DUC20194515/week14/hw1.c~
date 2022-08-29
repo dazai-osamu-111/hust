@@ -1,0 +1,69 @@
+#include<stdio.h>
+typedef struct{
+  char anh[25];
+  char viet[25];
+} dic;
+typedef dic element;
+#include "GenSBTree st.h"
+int main(){
+  FILE *fptr;
+  treetype T, temp; 
+  dic a;
+  int x;
+  char s[25],x1;
+  fptr=fopen("dic.txt", "r+");
+  if(fptr==NULL){
+    printf("Cannot open file dict.txt\n");
+    return 1;
+  }
+  do{
+    printf("\n\n1. Nap tu dien\n"
+	   "2. in tu dien\n"
+	   "3. tim kiem va cap nhat\n"
+	   "5.exit\n");
+    printf("ban chon? ");
+    scanf("%d", &x);
+    switch(x){
+    case 1:
+      makenulltree(&T);
+      if(fseek(fptr, 0, SEEK_SET) !=0){
+	printf("fseek failed\n");
+	return 1;
+      }
+      while(fscanf(fptr,"%s%s",a.anh,a.viet)!=EOF){
+	insertnode(a, &T);
+      }
+      printf("Done!\n");
+      break;
+    case 2:
+      inorderprint(T);
+      break;
+    case 3:
+      printf("nhap 1 tu tieng anh: ");
+      scanf("%s",s);
+      __fpurge(stdin);
+      temp=search(s,T);
+      if(temp!=NULL){
+	printf("Ban co cap nhat noi dung moi  vao tu dien ko?(y\n)\n");
+	printf("Ban chon: ");
+	scanf("%c", &x1);
+	if(x1=='n'){
+	  printf("ok bro\n");
+	};
+	if(x1=='y'){
+	  printf("giai nghia tieng viet? ");
+	  scanf("%s",temp->key.viet);
+	}
+      } else{
+	printf("Nhap tu giai nghia: ");
+	scanf("%s", a.viet);
+	strcpy(a.anh, s);
+	insertnode(a, &T);
+      }
+      break;
+    default:
+      break;
+    }
+  } while(x!=5);
+  return 0;
+}

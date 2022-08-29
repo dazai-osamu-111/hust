@@ -1,0 +1,20 @@
+/* Write a program that generates more than 1 milion integer numbers. These number are in range of 40 different discrete values. */
+#include<stdio.h>
+#include<stdlib.h>
+#include<time.h>
+#define MAX 1000001
+int main(){
+  int a[MAX];
+  int i, n;
+  printf("Enter the number of integers: ");
+  scanf("%d", &n);
+  srand(time(0));
+  for(i=0;i<n;i++){
+    a[i]=rand()%40;
+  }
+  for(i=0;i<n;i++){
+    printf("%d\t", a[i]);
+  }
+  printf("\n");
+  return 0;
+}

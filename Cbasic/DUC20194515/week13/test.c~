@@ -1,0 +1,19 @@
+#include<stdio.h>
+#include "GenSBTree.h"
+int main(){
+  int a[10]={4,9,5,100,26,18,13,77,1,34};
+  int i;
+  treetype root;
+  makenulltree(&root);
+  for(i=0;i<10;i++)
+    insertnode(a[i], &root);
+  inorderprint(root);
+  printf("\n\n\n\n");
+  
+  freetree(&root);
+  makenulltree(&root);
+  for(i=0;i<10;i++)
+    insertnode(a[i], &root);
+  inorderprint(root);
+  return 0;
+}

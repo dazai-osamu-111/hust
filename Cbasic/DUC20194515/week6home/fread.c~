@@ -1,0 +1,38 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include<stdio_ext.h>
+#define MAX 300
+typedef struct{
+  char model[40];
+  char space[10];
+  char ssize[15];
+  char price[20];
+} phonedb;
+int main(int argc, char *argv[]){
+  if(argc != 2){
+    printf("Error!\n");
+    printf("True syntax: fread <filename>\n");
+    return 1;
+  }
+  FILE *fin;
+  if((fin=fopen(argv[1],"r")) == NULL){
+    printf("Cannot open file!\n");
+    return 1;
+  }
+  int n=0,irc=0;
+  char a[MAX];
+  while((fgets(a, MAX, fin))!= EOF){
+    n++;
+  }
+  if(fseek(fin, 0, SEEK_SET) != 0){
+    printf("fseek failed!\n");
+    return 1;
+  }
+  phonedb *s=(phonedb*)malloc(sizeof(phonedb) * n);
+  fread(s, sizeof(phonedb), n, fin);
+  for(int i=0;i<n;i++){
+     printf("%-30s%-10s%-10s%s\n",s.model,s.space,s.ssize,s.price);
+  }
+  return 0;
+}

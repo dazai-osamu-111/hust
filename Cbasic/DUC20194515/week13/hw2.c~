@@ -1,0 +1,63 @@
+#include<stdio.h>
+#include<string.h>
+typedef struct{
+  char firstname[10];
+  char midname[10];
+  char lastname[10];
+} tensv;
+typedef tensv element;
+
+int compare(tensv s1, tensv s2){
+  if(strcmp(s1.firstname,s2.firstname)) return 1;
+  if(strcmp(s1.firstname,s2.firstname)<0) return -1;
+  if(strcmp(s1.firstname,s2.firstname)==0){
+    if(strcmp(s1.midname,s2.midname)) return 1;
+    if(strcmp(s1.midname,s2.midname)<0) return -1;
+    if(strcmp(s1.midname,s2.midname)==0){
+      if(strcmp(s1.lastname,s2.lastname)) return 1;
+      if(strcmp(s1.lastname,s2.lastname)<0) return -1;
+      if(strcmp(s1.lastname,s2.lastname)==0) return 0;
+    }
+  }
+}
+void inten(tensv a){
+  printf("%s %s %s\n", a.lastname,a.midname,a.firstname);
+  return;
+}
+#include "GenSBTree string.h"
+typedef struct{
+  int  stt;
+  tensv ten;
+  char mssv[20];
+  char sdt[20];
+} sinhvien;
+int main(){
+  treetype T;
+  FILE *fptr;
+  sinhvien a[20];
+  fptr=fopen("dssv.txt", "r+");
+  if(fptr==NULL){
+    printf("cannot open file.\n");
+    return 1;
+  }
+  int i=0, count=0;
+  
+  while((fscanf(fptr, "%d%s%s%s%s%s", &a[i].stt,a[i].mssv,a[i].ten.lastname,a[i].ten.midname,a[i].ten.firstname,a[i].sdt))!=EOF){
+      i++;
+      count++;
+    }
+  for(i=0;i<count;i++){
+    printf( "%-10d%-20s%s %s %s\t\t%s\n", a[i].stt,a[i].mssv,a[i].ten.lastname,a[i].ten.midname,a[i].ten.firstname,a[i].sdt); 
+  }
+  fclose(fptr);
+  makenulltree(&T);
+  for(i=0;i<count;i++){
+    insertnode(a[i].ten, &T);
+  }
+  inorderprint(T);
+  printf("\n");
+  postorderprint(T);
+  printf("\n");
+  preorderprint(T);
+  return 0;
+}

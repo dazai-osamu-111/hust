@@ -1,0 +1,20 @@
+#include<stdio.h>
+typedef int element;
+#include "queuearr.h"
+int main(){
+  queue q;
+  int a[5];
+  int i;
+  makenullQ(&q);
+  printf("Enter 5 numbers:\n ");
+  for(i=0;i<5;i++){
+    scanf("%d",&a[i]);
+  }
+  for(i=0;i<5;i++){
+    enQ(a[i],&q);
+  }
+  for(i=0;i<5;i++){
+    printf("%d\n", deQ(&q));
+  }
+  return 0;
+}

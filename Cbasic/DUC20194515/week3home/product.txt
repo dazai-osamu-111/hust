@@ -1,0 +1,2 @@
+-1	Sam_sung_Television_4k 20000000
+-2	Apple_MacBook_2020     19560000

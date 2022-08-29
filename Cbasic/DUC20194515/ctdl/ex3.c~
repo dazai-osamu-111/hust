@@ -1,0 +1,27 @@
+#include<stdio.h>
+#define MAX 100
+int maxsub(int a[]){
+  int smax = a[1],ei = a[1], imax = 1, i, u, v;
+  for(i=2;i<=n;i++){
+    u = ei + a[i];
+    v = a[i];
+    if(u>v) ei = u;
+    else ei = v;
+    i(ei > smax){
+    smax := ei;
+    imax := i;
+    }
+  }
+  return smax;
+}
+int main(){
+  int a[MAX],i,n;
+  printf("Nhap so phan tu: ");
+  scanf("%d",&n);
+  for(i=0;i<n;i++){
+    printf("a[%d] = ",i+1);
+    scanf("%d",&a[i]);
+  }
+  printf("max: %d", maxsub(a));
+  return 0;
+}

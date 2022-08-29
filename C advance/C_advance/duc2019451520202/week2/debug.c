@@ -1,0 +1,66 @@
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <time.h>
+#define SMALL_NUMBER 20
+#define HUGE_NUMBER 2000
+
+int * createArray(int size);
+int compare(void const* x, void const *y) ;
+void printArray(int a[], int size);
+void exch(void *buf, int size, int i, int j);
+void selection_sort(void *a,int size,int l,int r,int (*compare)(void const*, void const*));
+
+int main() {
+int * a;
+srand(time(NULL));
+a = createArray(SMALL_NUMBER);
+selection_sort(a, sizeof(int), 0, SMALL_NUMBER-1,compare);
+printArray(a, SMALL_NUMBER);
+free(a);
+a = createArray(HUGE_NUMBER);
+
+ time_t start,end;
+start = time(NULL);
+selection_sort(a, sizeof(int), 0, HUGE_NUMBER-1,compare);
+end = time(NULL);
+printf("Run in %f seconds.\n", difftime(end, start));
+free(a);
+return 0;
+}
+int *createArray(int size) {
+int * a = (int*) malloc(size * sizeof(int));
+int *p = a;
+for(int i = 0; i < size; i++) *p++ = 1 + rand() % 10;
+return a;
+}
+int compare(void const* x, void const *y)
+{
+int m, n;
+m = *((int*)x);
+n = *((int*)y);
+if (m == n) return 0;
+return m>n?1:-1;
+}
+void exch(void *buf, int size, int i, int j){
+int temp = *((int*)buf+i*size);
+*((int*)buf+i*size) = *((int*)buf+j*size);
+*((int*)buf+j*size) = temp;
+}
+void printArray(int a[], int size) {
+for(int i = 0; i < size; i++) printf("%d ", a[i]);
+printf("\n");
+}
+
+void selection_sort(void *a,int size,int l,int r,int (*compare)(void* a, void* b))
+{
+int i,j,check;
+for(i=l;i<r;i++){
+check=i;
+for(j=i+1;j<=r;j++)
+if(compare((int*)a+j*size,(int*)a+check*size)==0)
+check=j;
+if(compare((int*)a+i*size,(int*)a+check*size)!=0)
+exch(a,size,i,check);
+}
+}
